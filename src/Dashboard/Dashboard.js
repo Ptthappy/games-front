@@ -1,23 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleLogout } from 'react-google-login';
 import Tabs from '../components/Tabs';
 import Tab from '../components/Tab';
+import Game from '../components/Game';
+import Deal from '../components/Deal';
 
 const Dashboard = ({ handleLogoutChange }) => {
+  const [games, setGames] = useState([]);
+  const [deals, setDeals] = useState([]);
+
+  useEffect(() => {
+    async function getGames() {
+      let response = await fetch('http://localhost:3001/games')
+      response = await response.json()
+      setGames(response);
+    }
+
+    async function getDeals() {
+      let response = await fetch('http://localhost:3001/deals')
+      response = await response.json()
+      setDeals(response);
+    }
+
+    try {
+      getGames();
+      getDeals();
+    } catch(e) {
+      console.log(e);
+    }
+  }, [])
   
   const successLogout = () => {
     handleLogoutChange();
   }
   return (
-    <div className="container">
-      <div className="card" style={{ width: '100%' }}>
+    <div className="container" style={{ overflowY: 'hidden' }}>
+      <div className="card" style={{ width: '100%', marginBottom: '15px', flex: '1 auto', overflow: 'auto' }}>
         <Tabs>
           <Tab title="Todos los Juegos">
-            Lemon is yellow
+            <div className="sqr-card-container">
+              {games.map((g, key) =>
+                <Game key={key} game={g} />
+              )}
+            </div>
             </Tab>
-          <Tab title="Juegos en Oferta">
-            Strawberry is red
-            </Tab>
+          <Tab title="Ofertas">
+            <div className="sqr-card-container">
+              {deals.map((d, key) =>
+                <Deal key={key} deal={d} />
+              )}
+            </div>
+          </Tab>
         </Tabs>
       </div>
       <div>

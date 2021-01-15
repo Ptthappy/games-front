@@ -18,9 +18,18 @@ const App = () => {
     else localStorage.removeItem('GOOGLE_SESSION');
   })
 
-  const login = (res) => {
-    console.log('do login')
+  const login = async (res) => {
     localStorage.setItem('GOOGLE_SESSION', JSON.stringify(res));
+    await fetch('http://localhost:3001/login',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(res.profileObj),
+        credentials: 'include',
+        mode: 'cors'
+    });
     setIsLogged(true);
   }
 

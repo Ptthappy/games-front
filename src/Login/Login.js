@@ -5,7 +5,6 @@ import '../App.css';
 const Login = ({ handleLoginChange }) => {
   
   const successLogin = (res) => {
-    console.log(res);
     if(!res.error) {
       handleLoginChange(res);
     }
