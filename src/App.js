@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Login from './Login/Login';
 import Dashboard from './Dashboard/Dashboard';
-import Moment from 'react-moment';
 import moment from 'moment';
-
 
 const App = () => {
   const [isLogged, setIsLogged] = useState(false);
@@ -16,11 +13,11 @@ const App = () => {
     let token = JSON.parse(localStorage.getItem('GOOGLE_SESSION'));
     if(token && moment().isBefore(moment(token.tokenObj.expires_at))) setIsLogged(true);
     else localStorage.removeItem('GOOGLE_SESSION');
-  })
+  }, [])
 
   const login = async (res) => {
     localStorage.setItem('GOOGLE_SESSION', JSON.stringify(res));
-    await fetch('http://localhost:3001/login',
+    await fetch(process.env.REACT_APP_BASE_URL + '/login',
       {
         method: 'POST',
         headers: {

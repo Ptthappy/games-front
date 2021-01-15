@@ -11,13 +11,13 @@ const Dashboard = ({ handleLogoutChange }) => {
 
   useEffect(() => {
     async function getGames() {
-      let response = await fetch('http://localhost:3001/games')
+      let response = await fetch(process.env.REACT_APP_BASE_URL + '/games')
       response = await response.json()
       setGames(response);
     }
 
     async function getDeals() {
-      let response = await fetch('http://localhost:3001/deals')
+      let response = await fetch(process.env.REACT_APP_BASE_URL + '/deals')
       response = await response.json()
       setDeals(response);
     }
